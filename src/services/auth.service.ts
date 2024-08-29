@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { createUser, getUserByUsername } from '../repositories/user.repository'
 import { ApiError } from '../utils/error.util'
 import { UserModel } from '../models/user.model'
+import { UserData } from '../utils/type.util'
 
 export const registerUser = async (
   username: string,
@@ -10,18 +11,6 @@ export const registerUser = async (
   role: string,
   company: string
 ): Promise<UserModel> => {
-  if (!username || !password) {
-    throw new ApiError('Username and password are required!', 400)
-  }
-
-  if (!company) {
-    throw new ApiError('Company required!', 400)
-  }
-
-  if (!role) {
-    throw new ApiError('Role required!', 400)
-  }
-
   const existingUser = await getUserByUsername(username)
   if (existingUser) {
     throw new ApiError('Username already exists!', 409)
@@ -34,11 +23,7 @@ export const registerUser = async (
 export const loginUser = async (
   username: string,
   password: string
-): Promise<string> => {
-  if (!username || !password) {
-    throw new ApiError('Username and password are required', 400)
-  }
-
+): Promise<{ token: string; user: UserData }> => {
   const user = await getUserByUsername(username)
 
   if (!user) {
@@ -51,11 +36,26 @@ export const loginUser = async (
     throw new ApiError('Invalid username or password', 401)
   }
 
+  const { _id, username: user_name, role, company } = user
+
   const token = jwt.sign(
-    { id: user._id, role: user.role, company: user.company },
+    {
+      id: _id,
+      username: user_name,
+      role: role,
+      company: company,
+    },
     process.env.JWT_SECRET!,
     { expiresIn: '1h' }
   )
 
-  return token
+  return {
+    token,
+    user: {
+      id: _id as string,
+      username: user_name,
+      role: role,
+      company: company,
+    },
+  }
 }

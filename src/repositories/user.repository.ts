@@ -1,4 +1,5 @@
 import User, { UserModel } from '../models/user.model'
+import { VendorInfo } from '../utils/type.util'
 
 export const createUser = async (
   user: Partial<UserModel>
@@ -14,4 +15,9 @@ export const getUserByUsername = async (
 
 export const getUserById = async (id: string): Promise<UserModel | null> => {
   return User.findById(id)
+}
+
+export const getAllVendor = async (): Promise<VendorInfo[]> => {
+  const vendor = User.find({ role: 'Vendor' }, { _id: 1, company: 1 }).exec()
+  return vendor
 }

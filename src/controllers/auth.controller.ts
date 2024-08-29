@@ -23,8 +23,8 @@ export const login = async (
 ) => {
   try {
     const { username, password } = req.body
-    const token = await loginUser(username, password)
-    res.status(200).json(ApiResponse('Login success', { token }))
+    const { user, token } = await loginUser(username, password)
+    res.status(200).json(ApiResponse('Login success', { user, token }))
   } catch (error) {
     next(error)
   }

@@ -3,10 +3,11 @@ import {
   createEventController,
   getAllEventsController,
 } from '../controllers/event.controller'
+import { authenticateToken } from '../middlewares/auth.middleware'
 
 const router = express.Router()
 
-router.get('/', getAllEventsController)
-router.post('/', createEventController)
+router.get('/', authenticateToken, getAllEventsController)
+router.post('/', authenticateToken, createEventController)
 
 export default router

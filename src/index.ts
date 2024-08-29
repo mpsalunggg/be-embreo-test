@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 
 import authRoutes from './routes/auth.route'
 import eventRoutes from './routes/event.route'
+import scheduleRoutes from './routes/schedule.route'
+import userRoutes from './routes/user.route'
 
 import errorHandler from './middlewares/error.middleware'
 import mongooseConfig from './utils/db.util'
@@ -15,6 +17,8 @@ const app = express()
 app.use(express.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/event', eventRoutes)
+app.use('/api/schedule', scheduleRoutes)
+app.use('/api/user', userRoutes)
 
 app.use(errorHandler)
 
