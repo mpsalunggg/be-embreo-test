@@ -1,6 +1,9 @@
 import express from 'express'
 import dotenv from 'dotenv'
+
 import authRoutes from './routes/auth.route'
+import eventRoutes from './routes/event.route'
+
 import errorHandler from './middlewares/error.middleware'
 import mongooseConfig from './utils/db.util'
 const PORT = process.env.PORT || 3000
@@ -11,6 +14,7 @@ const app = express()
 
 app.use(express.json())
 app.use('/api/auth', authRoutes)
+app.use('/api/event', eventRoutes)
 
 app.use(errorHandler)
 

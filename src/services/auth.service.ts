@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { createUser, findUserByUsername } from '../repositories/user.repository'
+import { createUser, getUserByUsername } from '../repositories/user.repository'
 import { ApiError } from '../utils/error.util'
 import { UserModel } from '../models/user.model'
 
@@ -22,7 +22,7 @@ export const registerUser = async (
     throw new ApiError('Role required!', 400)
   }
 
-  const existingUser = await findUserByUsername(username)
+  const existingUser = await getUserByUsername(username)
   if (existingUser) {
     throw new ApiError('Username already exists!', 409)
   }
@@ -39,7 +39,7 @@ export const loginUser = async (
     throw new ApiError('Username and password are required', 400)
   }
 
-  const user = await findUserByUsername(username)
+  const user = await getUserByUsername(username)
 
   if (!user) {
     throw new ApiError('Invalid username or password', 401)

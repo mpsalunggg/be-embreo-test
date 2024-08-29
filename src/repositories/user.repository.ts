@@ -6,12 +6,12 @@ export const createUser = async (
   return User.create(user)
 }
 
-export const findUserByUsername = async (
+export const getUserByUsername = async (
   username: string
 ): Promise<UserModel | null> => {
   return User.findOne({ username })
 }
 
-export const findUserById = async (id: string): Promise<UserModel | null> => {
+export const getUserById = async (id: string): Promise<UserModel | null> => {
   return User.findById(id)
 }
