@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 
@@ -17,6 +17,11 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+app.get('/', (_: Request, res: Response) => {
+  res.json({ message: 'You are connected!' })
+})
+
 app.use('/api/auth', authRoutes)
 app.use('/api/event', eventRoutes)
 app.use('/api/schedule', scheduleRoutes)
