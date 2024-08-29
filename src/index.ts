@@ -2,13 +2,13 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 
-import authRoutes from './src/routes/auth.route'
-import eventRoutes from './src/routes/event.route'
-import scheduleRoutes from './src/routes/schedule.route'
-import userRoutes from './src/routes/user.route'
+import authRoutes from './routes/auth.route'
+import eventRoutes from './routes/event.route'
+import scheduleRoutes from './routes/schedule.route'
+import userRoutes from './routes/user.route'
 
-import errorHandler from './src/middlewares/error.middleware'
-import mongooseConfig from './src/utils/db.util'
+import errorHandler from './middlewares/error.middleware'
+import mongooseConfig from './utils/db.util'
 const PORT = process.env.PORT || 3000
 
 dotenv.config()
