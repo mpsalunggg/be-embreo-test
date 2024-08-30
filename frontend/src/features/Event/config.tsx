@@ -25,7 +25,9 @@ export const columns = (
           {record.confirm_date ? (
             <Tag>{formatDates(record.confirm_date)}</Tag>
           ) : (
-            record.proposed_dates.map((date) => <Tag>{formatDates(date)}</Tag>)
+            record.proposed_dates.map((date, index) => (
+              <Tag key={index}>{formatDates(date)}</Tag>
+            ))
           )}
         </span>
       ),

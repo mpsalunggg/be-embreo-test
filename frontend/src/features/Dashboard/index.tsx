@@ -2,8 +2,9 @@
 import { Button } from 'antd'
 import useAuth from '@/hooks/useAuth'
 import Link from 'next/link'
+import { FC } from 'react'
 
-const Dashboard = () => {
+const Dashboard: FC = () => {
   const { isTokenValid, user } = useAuth()
 
   return (

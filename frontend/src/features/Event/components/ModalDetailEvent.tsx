@@ -54,8 +54,8 @@ const ModalDetailEvent: FC<ModalEventProps> = ({
             {postal_code || 'N/A'}
           </Descriptions.Item>
           <Descriptions.Item label="Proposed Dates">
-            {proposed_dates?.map((date) => (
-              <Tag>{formatDates(date)}</Tag>
+            {proposed_dates?.map((date, index) => (
+              <Tag key={index}>{formatDates(date)}</Tag>
             ))}
           </Descriptions.Item>
           <Descriptions.Item label="Confirmed Date">

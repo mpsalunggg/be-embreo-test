@@ -1,8 +1,9 @@
 'use client'
 import { Form, Input, Button, Card } from 'antd'
 import { useAuthLogin } from './hooks'
+import { FC } from 'react'
 
-const Login = () => {
+const Login: FC = () => {
   const { mutate, isPending } = useAuthLogin()
   const onFinish = (values: any) => {
     mutate(values)
