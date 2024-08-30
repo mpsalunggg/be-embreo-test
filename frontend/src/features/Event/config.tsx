@@ -4,7 +4,7 @@ import { Button, TableProps, Tag } from 'antd'
 import dayjs from 'dayjs'
 
 export const columns = (
-  showModal: () => void
+  showModal: (record: EventBookingType) => void
 ): TableProps<EventBookingType>['columns'] => {
   return [
     {
@@ -20,7 +20,7 @@ export const columns = (
     {
       title: 'Confirmed Date',
       key: 'confirmedDate',
-      render: (_: string, record: EventBookingType) => (
+      render: (_: unknown, record: EventBookingType) => (
         <span>
           {record.confirm_date ? (
             <Tag>{formatDates(record.confirm_date)}</Tag>
@@ -56,8 +56,8 @@ export const columns = (
     },
     {
       title: 'Action',
-      render: () => (
-        <Button type="primary" onClick={() => showModal()}>
+      render: (_: unknown, record: EventBookingType) => (
+        <Button type="primary" onClick={() => showModal(record)}>
           View
         </Button>
       ),

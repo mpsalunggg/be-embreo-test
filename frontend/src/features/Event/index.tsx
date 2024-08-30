@@ -5,13 +5,16 @@ import { useGetAllEventBooked } from './hooks'
 import { columns } from './config'
 import ModalDetailEvent from './components/ModalDetailEvent'
 import { useState } from 'react'
+import { EventBookingType } from '@/domains/event'
 
 const Event = () => {
   const { data, isLoading } = useGetAllEventBooked()
   const [open, setOpen] = useState<boolean>(false)
+  const [detail, setDetail] = useState<EventBookingType | {}>({})
 
-  const showModal = () => {
+  const showModal = (record: EventBookingType) => {
     setOpen(true)
+    setDetail(record)
   }
 
   const handleCancel = () => {
@@ -40,7 +43,7 @@ const Event = () => {
         rowKey="_id"
         pagination={{ pageSize: 10 }}
       />
-      <ModalDetailEvent open={open} handleCancel={handleCancel} />
+      <ModalDetailEvent open={open} handleCancel={handleCancel} data={detail} />
     </div>
   )
 }
