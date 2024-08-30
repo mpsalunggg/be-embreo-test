@@ -1,13 +1,14 @@
 'use client'
 import { Button } from 'antd'
-import { useState } from 'react'
+import useAuth from '@/hooks/useAuth'
+import Link from 'next/link'
 
 const Dashboard = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const { isTokenValid, user } = useAuth()
 
   return (
     <div className="flex flex-col items-center justify-center mt-24 text-center">
-      {!isLoggedIn ? (
+      {!isTokenValid ? (
         <div className="space-y-2">
           <div>
             <h1 className="text-3xl font-semibold">
@@ -22,17 +23,22 @@ const Dashboard = () => {
             Discover and book the best wellness events to rejuvenate your mind
             and body.
           </p>
-          <Button type="primary">Login</Button>
+          <Button type="primary">
+            <Link href="/login">Login</Link>
+          </Button>
         </div>
       ) : (
         <div className="space-y-2">
           <h1 className="text-4xl font-bold">
-            👋 Welcome <span className="font-bold text-blue-500">Back!</span>
+            👋 Welcome Back!{' '}
+            <span className="font-bold text-blue-500">{user?.username}</span>
           </h1>
           <p className="text-lg text-gray-600">
             Explore your booked events and upcoming wellness activities.
           </p>
-          <Button type="primary">See Event</Button>
+          <Button type="primary">
+            <Link href="/event">See Event</Link>
+          </Button>
         </div>
       )}
     </div>

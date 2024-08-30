@@ -1,11 +1,25 @@
-import { Button } from 'antd'
+'use client'
+import { FC, useEffect, useState } from 'react'
+import { Button, message } from 'antd'
 import Link from 'next/link'
-import { FC } from 'react'
+import { checkToken } from '@/utils/checkToken'
+import { getToken, getUser, removeLocalStorage } from '@/utils/storage'
+import { useRouter } from 'next/navigation'
+import { UserType } from '@/domains/auth'
+import useAuth from '@/hooks/useAuth'
 
 const Navbar: FC = () => {
-  const isLogin = true
+  const { isTokenValid, user } = useAuth()
+  const router = useRouter()
+
+  const logout = () => {
+    removeLocalStorage()
+    message.success('Logout Success!')
+    router.push('/login')
+  }
+
   return (
-    <header className="border-b">
+    <div className="border-b">
       <div className="max-w-7xl mx-auto p-5">
         <div className="flex items-center justify-between gap-4">
           <Link href="/">
@@ -14,23 +28,27 @@ const Navbar: FC = () => {
             </h1>
           </Link>
 
-          <nav className="flex items-center gap-7">
+          <div className="flex items-center gap-7">
             <div className="flex gap-2 items-center">
-              {isLogin ? (
+              {isTokenValid ? (
                 <div className="flex items-center gap-2">
                   <p>
-                    Hi, <span className="text-blue-500">Anonymous</span>
+                    Hi, <span className="text-blue-500">{user?.username}</span>
                   </p>
-                  <Button type="primary">Logout</Button>
+                  <Button type="primary" onClick={logout}>
+                    Logout
+                  </Button>
                 </div>
               ) : (
-                <Button>Login</Button>
+                <Button type="primary">
+                  <Link href="/login">Login</Link>
+                </Button>
               )}
-            </div>
-          </nav>
+            </div>  
+          </div>
         </div>
       </div>
-    </header>
+    </div>
   )
 }
 export default Navbar

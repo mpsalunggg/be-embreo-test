@@ -1,22 +1,20 @@
 'use client'
 import { Form, Input, Button, Card } from 'antd'
+import { useAuthLogin } from './hooks'
 
 const Login = () => {
+  const { mutate, isPending } = useAuthLogin()
   const onFinish = (values: any) => {
-    console.log('Success:', values)
-  }
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
+    mutate(values)
   }
 
   return (
-    <div className="flex justify-center flex-col gap-4 items-center h-screen">
+    <div className="flex justify-center flex-col gap-4 items-center h-screen px-4">
       <div className="text-center">
         <h1 className="text-3xl font-semibold">
           WellnessEvent<span className="font-bold text-blue-500">Book</span>
         </h1>
-        <p className="text-slate-500">Silahkan login terlebih dahulu </p>
+        <p className="text-slate-500">Silahkan login terlebih dahulu</p>
       </div>
       <Card className="lg:w-1/4 md:w-1/3 w-full">
         <Form
@@ -24,7 +22,6 @@ const Login = () => {
           layout="vertical"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
         >
           <Form.Item
             label="Username"
@@ -43,8 +40,13 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-              Login
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ width: '100%' }}
+              disabled={isPending}
+            >
+              {isPending ? 'Loading...' : 'Login'}
             </Button>
           </Form.Item>
         </Form>
