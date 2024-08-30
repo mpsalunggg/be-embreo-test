@@ -1,5 +1,5 @@
 import { EventBookingType } from '@/domains/event'
-import { formatProposedDates } from '@/utils/date'
+import { formatDates } from '@/utils/date'
 import { Button, TableProps, Tag } from 'antd'
 import dayjs from 'dayjs'
 
@@ -20,9 +20,13 @@ export const columns = (
     {
       title: 'Confirmed Date',
       key: 'confirmedDate',
-      render: (_: string, record: any) => (
+      render: (_: string, record: EventBookingType) => (
         <span>
-          {formatProposedDates(record.proposed_dates, record.confirm_date)}
+          {record.confirm_date ? (
+            <Tag>{formatDates(record.confirm_date)}</Tag>
+          ) : (
+            record.proposed_dates.map((date) => <Tag>{formatDates(date)}</Tag>)
+          )}
         </span>
       ),
     },
@@ -33,7 +37,11 @@ export const columns = (
       render: (status: string) => (
         <Tag
           color={
-            status === 'Accept' ? 'green' : status === 'Reject' ? 'red' : 'blue'
+            status === 'Approve'
+              ? 'green'
+              : status === 'Reject'
+              ? 'red'
+              : 'blue'
           }
         >
           {status.toUpperCase()}
