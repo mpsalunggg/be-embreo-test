@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+  ChangeStatusReqType,
   EventBookingType,
+  EventDataReqType,
   EventListType,
   VendorListType,
 } from '@/domains/event'
@@ -44,5 +46,35 @@ export const useGetAllVendor = () => {
   return useQuery<VendorListType[], AxiosError>({
     queryKey: ['getAllVendor'],
     queryFn: async () => await EventService.getAllVendor(),
+  })
+}
+
+export const useCreateScheduleBookEvent = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (values: EventDataReqType) =>
+      await EventService.createScheduleBookEvent(values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getAllEventBooked'] })
+      message.success('Success create schedule book event!')
+    },
+    onError: (err: AxiosError) => {
+      message.error(err?.message || 'Something went wrong!')
+    },
+  })
+}
+
+export const useChangeStatusEvent = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (values: ChangeStatusReqType) =>
+      await EventService.changeStatusEvent(values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getAllEventBooked'] })
+      message.success('Success update status book event!')
+    },
+    onError: (err: AxiosError) => {
+      message.error(err?.message || 'Something went wrong!')
+    },
   })
 }

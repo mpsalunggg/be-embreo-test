@@ -1,9 +1,13 @@
 import {
+  ChangeStatusReqType,
   EventBookingType,
+  EventDataReqType,
+  EventDataResType,
   EventListType,
   VendorListType,
 } from '@/domains/event'
 import { fetcher } from './instance'
+import { BaseResponse } from '@/domains/response'
 
 export const EventService = {
   getAllListEvent: async (): Promise<EventListType[]> => {
@@ -19,7 +23,7 @@ export const EventService = {
   createNewEventList: async (
     id_author: string,
     event_name: string
-  ): Promise<EventListType> => {
+  ): Promise<BaseResponse<EventListType>> => {
     const res = await fetcher.post('/event', {
       id_author,
       event_name,
@@ -30,5 +34,19 @@ export const EventService = {
   getAllVendor: async (): Promise<VendorListType[]> => {
     const response = await fetcher.get('/user/vendor')
     return response.data.data
+  },
+
+  createScheduleBookEvent: async (
+    event: EventDataReqType
+  ): Promise<BaseResponse<EventDataResType>> => {
+    const res = await fetcher.post('/schedule', event)
+    return res.data
+  },
+
+  changeStatusEvent: async (
+    event: ChangeStatusReqType
+  ): Promise<BaseResponse<EventDataResType>> => {
+    const res = await fetcher.put('/schedule', event)
+    return res.data
   },
 }

@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { Modal, Form, Input, Select, DatePicker, Button, InputRef } from 'antd'
 import { useState } from 'react'
 import useAuth from '@/hooks/useAuth'
@@ -6,8 +6,11 @@ import {
   useGetAllVendor,
   useCreateEventList,
   useGetAllEventList,
+  useCreateScheduleBookEvent,
 } from '../hooks'
 import { OPTION_EVENT_LIST, OPTION_VENDOR_LIST } from '../config'
+import { formatDatesRequest } from '@/utils/date'
+import { EventDataReqType } from '@/domains/event'
 
 const vendors = [
   { label: 'Nike', value: 'nike' },
@@ -22,8 +25,13 @@ interface ModalAddEventProps {
 const ModalAddEvent: FC<ModalAddEventProps> = ({ open, handleCancel }) => {
   const { user } = useAuth()
   const { data: dataListEvent, isLoading: loadingList } = useGetAllEventList()
-  const { data: dataListVendor, isLoading: loadingVendor } = useGetAllVendor()
-  const { mutate, isPending } = useCreateEventList()
+  const { data: dataListVendor } = useGetAllVendor()
+  const {
+    mutate: mutateSchedule,
+    isSuccess,
+    isPending: loadingSchedule,
+  } = useCreateScheduleBookEvent()
+  const { mutate: mutateEvent, isPending } = useCreateEventList()
   const [name, setName] = useState('')
   const inputRef = useRef<InputRef>(null)
 
@@ -35,22 +43,36 @@ const ModalAddEvent: FC<ModalAddEventProps> = ({ open, handleCancel }) => {
     e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
   ) => {
     e.preventDefault()
-    mutate({ id_author: user?.id as string, event_name: name })
+    mutateEvent({ id_author: user?.id as string, event_name: name })
     setName('')
     setTimeout(() => {
       inputRef.current?.focus()
     }, 0)
   }
 
-  const handleFinish = (values: any) => {
-    console.log('Form values:', values)
+  const handleFinish = (values: EventDataReqType) => {
+    const data = {
+      ...values,
+      id_author: user?.id as string,
+      postal_code: Number(values.postal_code) ?? null,
+      proposed_dates: values.proposed_dates.map((date) =>
+        formatDatesRequest(date)
+      ),
+    }
+    mutateSchedule(data)
   }
+
+  useEffect(() => {
+    if (isSuccess) handleCancel()
+  }, [isSuccess])
 
   return (
     <Modal
       open={open}
       title={
-        <h1 className="text-blue-500 text-xl font-semibold">Add New Event Book</h1>
+        <h1 className="text-blue-500 text-xl font-semibold">
+          Add New Event Book
+        </h1>
       }
       onCancel={handleCancel}
       footer={null}
@@ -60,14 +82,14 @@ const ModalAddEvent: FC<ModalAddEventProps> = ({ open, handleCancel }) => {
       <Form
         layout="vertical"
         onFinish={handleFinish}
-        initialValues={{ proposed_dates: [], company: user?.company }}
+        initialValues={{ proposed_dates: [] }}
       >
-        <Form.Item name="company" label="My Company">
-          <Input disabled={true} />
+        <Form.Item label="My Company">
+          <Input disabled={true} defaultValue={user?.company} />
         </Form.Item>
 
         <Form.Item
-          name="event"
+          name="id_event"
           label="Select Event"
           rules={[{ required: true, message: 'Please select an event' }]}
         >
@@ -127,7 +149,7 @@ const ModalAddEvent: FC<ModalAddEventProps> = ({ open, handleCancel }) => {
         </Form.Item>
 
         <Form.Item
-          name="vendor"
+          name="id_vendor"
           label="Select Vendor"
           rules={[{ required: true, message: 'Please select a vendor' }]}
         >
@@ -143,36 +165,40 @@ const ModalAddEvent: FC<ModalAddEventProps> = ({ open, handleCancel }) => {
           rules={[
             { required: true, message: 'Please select at least one date' },
           ]}
-          className="w-full"
-          style={{ width: '100%' }}
         >
           <Input.Group compact>
             <Form.Item
               name={['proposed_dates', 0]}
+              noStyle
               rules={[{ required: true, message: 'Please select date 1' }]}
             >
-              <DatePicker placeholder="Date 1" className="w-full" />
+              <DatePicker placeholder="Date 1" />
             </Form.Item>
-
             <Form.Item
               name={['proposed_dates', 1]}
+              noStyle
               rules={[{ required: true, message: 'Please select date 2' }]}
             >
-              <DatePicker placeholder="Date 2" className="w-full" />
+              <DatePicker placeholder="Date 2" />
             </Form.Item>
-
             <Form.Item
               name={['proposed_dates', 2]}
+              noStyle
               rules={[{ required: true, message: 'Please select date 3' }]}
             >
-              <DatePicker placeholder="Date 3" className="w-full" />
+              <DatePicker placeholder="Date 3" />
             </Form.Item>
           </Input.Group>
         </Form.Item>
 
-        <Form.Item className="flex lg:justify-end">
-          <Button type="primary" htmlType="submit" className="lg:w-24 w-full">
-            Book
+        <Form.Item className="flex lg:justify-end w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="lg:w-24 w-full"
+            disabled={loadingSchedule}
+          >
+            {loadingSchedule ? 'Loading' : 'Book'}
           </Button>
         </Form.Item>
       </Form>

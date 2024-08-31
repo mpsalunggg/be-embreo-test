@@ -84,3 +84,27 @@ export const OPTION_VENDOR_LIST = (data: VendorListType[]) => {
     label: event.company,
   }))
 }
+
+export const OPTION_CONFIRM_DATE = (dates: string[]) => {
+  return dates?.map((date) => ({
+    value: date,
+    label: formatDates(date),
+  }))
+}
+
+export const OPTION_STATUS = [
+  {
+    value: 'Approve',
+    label: 'Approve',
+  },
+  {
+    value: 'Reject',
+    label: 'Reject',
+  },
+]
+
+export const COLOR_TAG_STATUS = (status: string) => {
+  if (status === 'Approve') return 'green'
+  if (status === 'Reject') return 'red'
+  return 'blue'
+}
