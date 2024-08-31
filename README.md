@@ -1,4 +1,5 @@
 # Embreo Tech Test
+
 By Muhamad Putra Satria
 
 ## Table of Contents
@@ -9,6 +10,27 @@ By Muhamad Putra Satria
 - [API Structure](#api-structure)
 - [Our Stacks](#our-stacks)
 
+#### Example Account For Login
+
+- Role HR
+  ```
+  // Account 1
+  username: HR 1
+  password: 12345
+  // Account 1
+  username: HR 2
+  password: 12345
+  ```
+- Role Vendor
+  ```
+  // Account 1
+  username: vendor 1
+  password: 12345
+  // Account 1
+  username: vendor 2
+  password: 12345
+  ```
+
 ### Requirements Test
 
 here I attach some requirements files that I have done
@@ -16,8 +38,8 @@ here I attach some requirements files that I have done
 - [Mongodb Compass UI and Collection Screenshoot Details](https://docs.google.com/presentation/d/1-syQ0ORQw2JBri3-O-OUQqQLz9lMrKAYB_j3oIaB-y8/edit?usp=sharing)
 - [Documentation API](https://documenter.getpostman.com/view/20326240/2sAXjKbYrH)
 - Deploy Link
-    - [Backend](https://embreo-be.vercel.app/)
-    - [Frontend](https://embreo-fe.vercel.app/)
+  - [Backend](https://embreo-be.vercel.app/)
+  - [Frontend](https://embreo-fe.vercel.app/)
 
 ### How To Run Project Backend
 
