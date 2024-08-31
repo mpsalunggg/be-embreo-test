@@ -4,13 +4,13 @@ import { FC } from 'react'
 import dayjs from 'dayjs'
 import { formatDates } from '@/utils/date'
 
-interface ModalEventProps {
+interface ModalDetailEventProps {
   open: boolean
   handleCancel(): void
   data: EventBookingType | {}
 }
 
-const ModalDetailEvent: FC<ModalEventProps> = ({
+const ModalDetailEvent: FC<ModalDetailEventProps> = ({
   open,
   handleCancel,
   data,

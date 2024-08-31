@@ -1,24 +1,31 @@
 'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Breadcrumb, Button, Table } from 'antd'
 import { useGetAllEventBooked } from './hooks'
 import { columns } from './config'
-import ModalDetailEvent from './components/ModalDetailEvent'
-import { useState } from 'react'
 import { EventBookingType } from '@/domains/event'
+import ModalDetailEvent from './components/ModalDetailEvent'
+import ModalAddEvent from './components/ModalAddEvent'
 
 const Event = () => {
   const { data, isLoading } = useGetAllEventBooked()
-  const [open, setOpen] = useState<boolean>(false)
+  const [openDetail, setOpenDetail] = useState<boolean>(false)
+  const [openAdd, setOpenAdd] = useState<boolean>(false)
   const [detail, setDetail] = useState<EventBookingType | {}>({})
 
-  const showModal = (record: EventBookingType) => {
-    setOpen(true)
+  const showModalDetail = (record: EventBookingType) => {
+    setOpenDetail(true)
     setDetail(record)
   }
 
+  const showModalAdd = () => {
+    setOpenAdd(true)
+  }
+
   const handleCancel = () => {
-    setOpen(false)
+    setOpenDetail(false)
+    setOpenAdd(false)
   }
 
   return (
@@ -34,16 +41,21 @@ const Event = () => {
             },
           ]}
         />
-        <Button>+ Add New Event</Button>
+        <Button onClick={showModalAdd}>+ Add New Event</Button>
       </div>
       <Table
         loading={isLoading}
-        columns={columns(showModal)}
+        columns={columns(showModalDetail)}
         dataSource={data}
         rowKey="_id"
         pagination={{ pageSize: 10 }}
       />
-      <ModalDetailEvent open={open} handleCancel={handleCancel} data={detail} />
+      <ModalDetailEvent
+        open={openDetail}
+        handleCancel={handleCancel}
+        data={detail}
+      />
+      <ModalAddEvent open={openAdd} handleCancel={handleCancel} />
     </div>
   )
 }

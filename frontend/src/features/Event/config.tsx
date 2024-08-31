@@ -1,4 +1,8 @@
-import { EventBookingType } from '@/domains/event'
+import {
+  EventBookingType,
+  EventListType,
+  VendorListType,
+} from '@/domains/event'
 import { formatDates } from '@/utils/date'
 import { Button, TableProps, Tag } from 'antd'
 import dayjs from 'dayjs'
@@ -65,4 +69,18 @@ export const columns = (
       ),
     },
   ]
+}
+
+export const OPTION_EVENT_LIST = (data: EventListType[]) => {
+  return data.map((event) => ({
+    value: event._id,
+    label: event.event_name,
+  }))
+}
+
+export const OPTION_VENDOR_LIST = (data: VendorListType[]) => {
+  return data.map((event) => ({
+    value: event._id,
+    label: event.company,
+  }))
 }

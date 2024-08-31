@@ -37,3 +37,15 @@ export interface EventBookingType {
   vendorDetails: VendorDetailsType
   authorDetails: AuthorDetailsType
 }
+
+export interface EventListType {
+  _id: string
+  event_name: string
+  id_author: string
+  __v: number
+}
+
+export interface VendorListType {
+  _id: string
+  company: string
+}
