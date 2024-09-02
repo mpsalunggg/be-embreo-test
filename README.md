@@ -52,8 +52,7 @@ here I attach some requirements files that I have done
   cd backend
   ```
 
-- Create URL Cluster on MongoDB Atlas
-  Buat cluster MongoDB di [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+- Create URL Cluster on MongoDB Atlas[MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
 - Open URL MongoDB on MongoDB Compass (Optional)
 - Install Dependencies
