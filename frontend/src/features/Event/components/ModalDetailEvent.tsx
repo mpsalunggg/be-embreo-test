@@ -95,25 +95,6 @@ const ModalDetailEvent: FC<ModalDetailEventProps> = ({
           <Descriptions.Item label="Created At">
             {dayjs(created_at).format('YYYY-MM-DD')}
           </Descriptions.Item>
-          {confirm_date && (
-            <Descriptions.Item label="Confirm Date">
-              {dayjs(confirm_date).format('YYYY-MM-DD')}
-            </Descriptions.Item>
-          )}
-          {remarks_reject && (
-            <Descriptions.Item label="Remarks Reject">
-              {remarks_reject}
-            </Descriptions.Item>
-          )}
-        </Descriptions>
-        <Divider />
-        <Descriptions title="Vendor Details" bordered column={1}>
-          <Descriptions.Item label="Username">
-            {vendorDetails?.username}
-          </Descriptions.Item>
-          <Descriptions.Item label="Company">
-            {vendorDetails?.company}
-          </Descriptions.Item>
         </Descriptions>
         <Divider />
         <Descriptions title="Vendor Details" bordered column={1}>
